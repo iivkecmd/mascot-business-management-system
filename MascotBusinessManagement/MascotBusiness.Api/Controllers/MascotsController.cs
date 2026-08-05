@@ -34,5 +34,16 @@ namespace MascotBusiness.Api.Controllers
 
             return StatusCode(StatusCodes.Status201Created, mascot);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetMascot(int id) {
+
+            var mascot = await _context.Mascots.FindAsync(id);
+
+            if (mascot == null) { return NotFound(); }
+
+
+            return Ok(mascot);
+        }
     }
 }
