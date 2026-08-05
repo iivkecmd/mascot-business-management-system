@@ -21,7 +21,20 @@ namespace MascotBusiness.Api.Features.Mascots
         [HttpGet]
         public async Task<IActionResult> GetMascots() {
 
-            var mascots = await _context.Mascots.ToListAsync();
+            var mascots = await _context.Mascots
+                .AsNoTracking()
+                .Select(mascot => new MascotCatalogItemResponse
+                {
+                    Id = mascot.Id,
+                    Name = mascot.Name,
+                    ImageUrl = mascot.ImageUrl,
+                    RentalPrice = mascot.RentalPrice,
+                    SalePrice = mascot.SalePrice,
+                    IsAvailableForRent = mascot.IsAvailableForRent,
+                    IsAvailableForSale = mascot.IsAvailableForSale
+                })
+                .ToListAsync();
+
             return Ok(mascots);
         }
 
@@ -59,7 +72,22 @@ namespace MascotBusiness.Api.Features.Mascots
             _context.Mascots.Add(mascot);
             await _context.SaveChangesAsync();
 
-            return StatusCode(StatusCodes.Status201Created, mascot);
+            var response = new MascotDetailsResponse
+            {
+                Id = mascot.Id,
+                Name = mascot.Name,
+                Description = mascot.Description,
+                ImageUrl = mascot.ImageUrl,
+                RentalPrice = mascot.RentalPrice,
+                SalePrice = mascot.SalePrice,
+                IsAvailableForRent = mascot.IsAvailableForRent,
+                IsAvailableForSale = mascot.IsAvailableForSale
+            };
+
+            return CreatedAtAction(
+                nameof(GetMascot),
+                new { id = mascot.Id },
+                response);
 
         }
 
@@ -67,11 +95,24 @@ namespace MascotBusiness.Api.Features.Mascots
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMascot(int id) {
 
-            var mascot = await _context.Mascots.FindAsync(id);
+            var mascot = await _context.Mascots
+                .AsNoTracking()
+                .Where(mascot => mascot.Id == id)
+                .Select(mascot => new MascotDetailsResponse
+                {
+                    Id = mascot.Id,
+                    Name = mascot.Name,
+                    Description = mascot.Description,
+                    ImageUrl = mascot.ImageUrl,
+                    RentalPrice = mascot.RentalPrice,
+                    SalePrice = mascot.SalePrice,
+                    IsAvailableForRent = mascot.IsAvailableForRent,
+                    IsAvailableForSale = mascot.IsAvailableForSale
+                })
+                .FirstOrDefaultAsync();
 
             if (mascot == null) { return NotFound(); }
-
-
+            
             return Ok(mascot);
         }
 
