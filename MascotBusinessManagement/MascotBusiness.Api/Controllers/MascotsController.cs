@@ -75,5 +75,21 @@ namespace MascotBusiness.Api.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMascot(int id)
+        {
+            var mascot = await _context.Mascots.FindAsync(id);
+
+            if (mascot == null)
+            {
+                return NotFound();
+            }
+
+            _context.Mascots.Remove(mascot);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
