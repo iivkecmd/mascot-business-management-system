@@ -1,0 +1,241 @@
+# Družbalica — kontekst projekta
+
+## 1. Svrha dokumenta
+
+Ovaj dokument je glavni kontekst za rad na projektu. Pre svake veće izmene prvo ga pročitati, zatim pregledati postojeći kod i nastaviti od trenutnog stanja.
+
+Ne praviti celu aplikaciju odjednom. Projekat razvijati kroz male funkcionalne celine koje mogu da se pokrenu, provere i objasne.
+
+## 2. Ideja projekta
+
+**Družbalica** je web aplikacija za:
+
+- iznajmljivanje maskota za događaje;
+- prodaju maskota;
+- interno upravljanje zahtevima, porudžbinama i poslovnim podacima.
+
+Aplikacija je portfolio projekat Ive Samopjan. Treba da pokaže praktično znanje iz razvoja full-stack aplikacija, ali kod mora ostati razumljiv kako bi Iva mogla samostalno da ga predstavi i objasni na razgovoru za posao.
+
+## 3. Korisnici aplikacije
+
+### Klijent
+
+Klijent koristi javni deo aplikacije i **ne mora da ima nalog niti da se prijavi**.
+
+Može da:
+
+- pregleda ponudu maskota;
+- otvori detalje maskote;
+- izabere kupovinu ili iznajmljivanje;
+- pošalje zahtev sa svojim kontakt podacima;
+- dobije broj zahteva ili porudžbine;
+- kasnije proveri status zahteva.
+
+### Zaposleni
+
+Zaposleni se prijavljuje u interni deo i obrađuje rezervacije i porudžbine.
+
+### Administrator
+
+Administrator ima sve mogućnosti zaposlenog, a kasnije i upravljanje korisnicima, finansijama, izveštajima i podešavanjima.
+
+U prvom MVP-u nije neophodno odmah implementirati potpuno razdvojene dozvole administratora i zaposlenog. Najpre je dovoljno zaštititi interni deo aplikacije.
+
+## 4. Dva dela aplikacije
+
+### Javni deo
+
+- početna stranica;
+- katalog maskota;
+- detalji maskote;
+- forma za zahtev za iznajmljivanje;
+- kupovina i porudžbina;
+- potvrda uspešnog slanja;
+- praćenje statusa bez naloga.
+
+### Interni deo
+
+- prijava;
+- kontrolna tabla;
+- pregled rezervacija;
+- detalji rezervacije;
+- potvrđivanje, odbijanje i promena statusa;
+- pregled i obrada prodajnih porudžbina.
+
+## 5. Tehnologije
+
+Planirani tehnološki stek:
+
+- **Backend:** C# i ASP.NET Core Web API;
+- **Frontend:** React;
+- **Baza:** SQL Server uz Entity Framework Core;
+- **Autentifikacija:** JWT, kada dođemo do prijave zaposlenih;
+- **Dokumentacija API-ja:** Swagger/OpenAPI;
+- **Kontrola verzija:** Git i GitHub;
+- **Opcionalno kasnije:** Docker.
+
+Ne uvoditi novu biblioteku ili složenu arhitekturu bez jasne potrebe.
+
+## 6. Prvi MVP
+
+Prva stvarno upotrebljiva verzija treba da podrži ovaj tok:
+
+```text
+Klijent pregleda maskote
+→ otvara detalje maskote
+→ šalje zahtev za iznajmljivanje bez prijave
+→ zahtev se čuva u bazi
+→ interni korisnik vidi zahtev
+→ potvrđuje ga, odbija ili menja status
+```
+
+Prodavnica se dodaje tek kada tok iznajmljivanja radi od početka do kraja.
+
+### Modeli dovoljni za prvi deo
+
+Za početak koristiti samo:
+
+- `Mascot`;
+- `Customer`;
+- `Reservation`.
+
+Kada se uvede zaštićen interni deo, dodati `User`.
+
+Kada počne izrada prodavnice, dodati:
+
+- `SalesOrder`;
+- `SalesOrderItem`.
+
+Za sada nije potrebno praviti posebne tabele `MascotRentalInfo`, `MascotSaleInfo`, `MascotSize`, `Payment`, `Supplier`, `ImportBatch`, `Expense`, `Notification` i `ActivityLog`.
+
+## 7. Početni podaci modela
+
+Ovo je smernica, a ne nepromenljiva konačna šema.
+
+### Mascot
+
+- `Id`;
+- `Name`;
+- `Description`;
+- `ImageUrl`;
+- `RentalPrice`;
+- `SalePrice` (može biti prazno ako se maskota ne prodaje);
+- `IsAvailableForRent`;
+- `IsAvailableForSale`;
+- `StockQuantity`.
+
+### Customer
+
+- `Id`;
+- `FirstName`;
+- `LastName`;
+- `Phone`;
+- `Email`;
+- opciono adresa i napomena kada budu potrebne.
+
+Telefon i email ne moraju biti strogo jedinstveni u bazi. Pre dodavanja klijenta aplikacija kasnije može upozoriti na mogućeg duplikata.
+
+### Reservation
+
+- `Id`;
+- javni broj zahteva;
+- `MascotId`;
+- `CustomerId`;
+- `StartAt`;
+- `EndAt`;
+- lokacija događaja;
+- napomena;
+- status;
+- datum kreiranja.
+
+Koristiti `StartAt` i `EndAt`, a ne odvojene kolone za datum i vreme.
+
+## 8. Statusi
+
+Za prvi MVP statusi rezervacije mogu biti:
+
+- `Pending` — novi zahtev;
+- `Confirmed` — potvrđena rezervacija;
+- `Rejected` — odbijena;
+- `Cancelled` — otkazana;
+- `Completed` — završena.
+
+Ne dodavati dodatne statuse dok za njih ne postoji ekran i stvarna poslovna potreba.
+
+## 9. Najvažnije poslovno pravilo
+
+Ista maskota ne sme imati dve potvrđene rezervacije čiji se termini preklapaju.
+
+Preklapanje postoji kada važi:
+
+```text
+newStart < existingEnd
+AND
+newEnd > existingStart
+```
+
+Klijenti mogu poslati više zahteva za isti termin, ali pri promeni statusa u `Confirmed` sistem mora ponovo proveriti dostupnost. Naprednu transakcijsku i concurrency zaštitu dodati kada osnovni tok već radi.
+
+## 10. Redosled razvoja
+
+1. Kreirati osnovni backend i frontend i povezati bazu.
+2. Napraviti `Mascot` model i prikazati katalog maskota.
+3. Napraviti stranicu sa detaljima maskote.
+4. Dodati `Customer` i `Reservation` modele.
+5. Napraviti javnu formu za iznajmljivanje i sačuvati zahtev u bazi.
+6. Napraviti jednostavan interni pregled rezervacija i promenu statusa.
+7. Dodati prijavu i zaštititi interni deo.
+8. Dodati prodavnicu, korpu i prodajne porudžbine.
+9. Tek zatim dodavati kalendar, uplate, zalihe, zaposlene i izveštaje.
+
+Svaki korak mora biti pokrenut i proveren pre prelaska na sledeći.
+
+## 11. Funkcionalnosti za kasnije
+
+Kada osnovna aplikacija bude stabilna, mogu se dodati:
+
+- praćenje zahteva preko broja zahteva i emaila ili telefona;
+- kalendar rezervacija;
+- evidencija avansa i drugih uplata;
+- više veličina i zalihe po veličini;
+- dobavljači i nabavne ture;
+- troškovi i finansijski izveštaji;
+- obaveštenja;
+- audit log;
+- izvoz u Excel ili PDF;
+- email potvrde;
+- napredne dozvole za zaposlene i administratora;
+- Docker i objavljivanje aplikacije.
+
+Ovo nisu zahtevi za početnu verziju.
+
+## 12. Pravila rada za Codex/AI
+
+- Pre izmene pregledati postojeću strukturu projekta i ovaj dokument.
+- Ne pretpostavljati da treba implementirati sve planirane funkcionalnosti.
+- Raditi samo trenutno dogovorenu celinu.
+- Ne menjati postojeću arhitekturu bez objašnjenja i jasnog razloga.
+- Ne uvoditi nepotrebne obrasce, apstrakcije i pakete.
+- Kod pisati jasno, početnički razumljivo i dovoljno kvalitetno za portfolio.
+- Važnu poslovnu logiku držati na backendu, ne samo na frontendu.
+- Dodati validaciju unosa i razumljive poruke o grešci.
+- Posle svake izmene pokrenuti relevantan build i testove.
+- Ne brisati ili prepisivati korisnički kod koji nije povezan sa zadatkom.
+- Na kraju svakog koraka objasniti Ivi šta je napravljeno, gde se nalazi i kako može da proveri da radi.
+
+## 13. Trenutno stanje
+
+Za sada je definisana ideja i okvirni plan aplikacije. Detaljan veliki ER model postoji samo kao mogući pravac za kasnije i ne treba ga odmah u potpunosti implementirati.
+
+Sledeći praktični cilj je započinjanje projekta kroz najmanju funkcionalnu celinu: osnovna struktura, baza i katalog maskota.
+
+## 14. Definicija uspeha
+
+Projekat je uspešan ako:
+
+- radi od frontenda do baze;
+- ima jasan i realan tok iznajmljivanja i kasnije prodaje;
+- može lako da se pokrene i demonstrira;
+- Iva razume ključne modele, API pozive i poslovnu logiku;
+- kod i README jasno pokazuju njeno znanje poslodavcu.
+
