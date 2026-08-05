@@ -25,3 +25,19 @@ GET {{MascotBusiness.Api_HostAddress}}/api/mascots
 Accept: application/json
 
 ###
+
+POST {{MascotBusiness.Api_HostAddress}}/api/mascots
+Content-Type: application/json
+
+{
+  "name": "",
+  "description": "Neispravna probna maskota",
+  "imageUrl": "/images/test.jpg",
+  "rentalPrice": -500,
+  "salePrice": null,
+  "isAvailableForRent": true,
+  "isAvailableForSale": false,
+  "stockQuantity": -2
+}
+
+###
