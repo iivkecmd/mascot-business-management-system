@@ -225,9 +225,24 @@ Ovo nisu zahtevi za početnu verziju.
 
 ## 13. Trenutno stanje
 
-Za sada je definisana ideja i okvirni plan aplikacije. Detaljan veliki ER model postoji samo kao mogući pravac za kasnije i ne treba ga odmah u potpunosti implementirati.
+Završena je početna backend celina za katalog maskota:
 
-Sledeći praktični cilj je započinjanje projekta kroz najmanju funkcionalnu celinu: osnovna struktura, baza i katalog maskota.
+- kreiran je ASP.NET Core Web API projekat na .NET 10;
+- povezan je lokalni SQL Server Express preko Entity Framework Core-a;
+- dodat je `ApplicationDbContext` i razvojni connection string;
+- napravljen je `Mascot` model sa osnovnom validacijom;
+- kreirana je i primenjena migracija `InitialCreate`;
+- napravljeni su GET, POST, PUT i DELETE endpointi za maskote;
+- dodati su request DTO-i za kreiranje i izmenu maskote;
+- dodati su posebni response DTO-i za kartice kataloga i detalje maskote;
+- uklonjen je početni `WeatherForecast` primer;
+- relevantni build i API zahtevi uspešno su provereni.
+
+Backend se razvija kao jednostavan modularni monolit sa feature-based organizacijom. Kod jedne funkcionalnosti drži se zajedno unutar `Features` foldera, dok zajednički EF Core kontekst i migracije ostaju izdvojeni. Ne uvoditi mikroservise, MediatR, generičke repozitorijume ili druge apstrakcije bez stvarne potrebe.
+
+Detaljan veliki ER model i dalje postoji samo kao mogući pravac za kasnije i ne treba ga odmah u potpunosti implementirati.
+
+Sledeći praktični cilj je kreiranje osnovnog React frontenda, povezivanje sa postojećim API-jem i prikaz kataloga i detalja maskota. Nakon toga nastaviti sa `Customer` i `Reservation` funkcionalnostima prema redosledu razvoja iz ovog dokumenta.
 
 ## 14. Definicija uspeha
 
@@ -238,4 +253,3 @@ Projekat je uspešan ako:
 - može lako da se pokrene i demonstrira;
 - Iva razume ključne modele, API pozive i poslovnu logiku;
 - kod i README jasno pokazuju njeno znanje poslodavcu.
-
