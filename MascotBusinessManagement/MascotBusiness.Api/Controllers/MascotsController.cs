@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using MascotBusiness.Api.Data;
+using MascotBusiness.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MascotBusiness.Api.Controllers
@@ -23,6 +24,15 @@ namespace MascotBusiness.Api.Controllers
 
             var mascots = await _context.Mascots.ToListAsync();
             return Ok(mascots);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateMascot(Mascot mascot)
+        {
+            _context.Mascots.Add(mascot);
+            await _context.SaveChangesAsync();
+
+            return StatusCode(StatusCodes.Status201Created, mascot);
         }
     }
 }

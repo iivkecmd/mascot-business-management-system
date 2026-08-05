@@ -4,3 +4,24 @@ GET {{MascotBusiness.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST {{MascotBusiness.Api_HostAddress}}/api/mascots
+Content-Type: application/json
+
+{
+  "name": "Miki Maus",
+  "description": "Maskota za decje rodjendane",
+  "imageUrl": "/images/miki-maus.jpg",
+  "rentalPrice": 3500,
+  "salePrice": null,
+  "isAvailableForRent": true,
+  "isAvailableForSale": false,
+  "stockQuantity": 1
+}
+
+###
+
+GET {{MascotBusiness.Api_HostAddress}}/api/mascots
+Accept: application/json
+
+###
