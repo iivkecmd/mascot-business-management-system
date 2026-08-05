@@ -2,10 +2,9 @@
 
 using Microsoft.AspNetCore.Mvc;
 using MascotBusiness.Api.Data;
-using MascotBusiness.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace MascotBusiness.Api.Controllers
+namespace MascotBusiness.Api.Features.Mascots
 {
    
 

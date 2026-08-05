@@ -1,4 +1,4 @@
-namespace MascotBusiness.Api.Models;
+namespace MascotBusiness.Api.Features.Mascots;
 
 using System.ComponentModel.DataAnnotations;
 

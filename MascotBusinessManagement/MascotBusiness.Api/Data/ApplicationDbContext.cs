@@ -1,4 +1,4 @@
-using MascotBusiness.Api.Models;
+using MascotBusiness.Api.Features.Mascots;
 using Microsoft.EntityFrameworkCore;
 
 namespace MascotBusiness.Api.Data;
