@@ -25,7 +25,8 @@ namespace MascotBusiness.Api.Features.Mascots
             return Ok(mascots);
         }
 
-        [HttpPost]
+        /*
+         [HttpPost]
         public async Task<IActionResult> CreateMascot(Mascot mascot)
         {
             _context.Mascots.Add(mascot);
@@ -33,6 +34,35 @@ namespace MascotBusiness.Api.Features.Mascots
 
             return StatusCode(StatusCodes.Status201Created, mascot);
         }
+        */
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateMascot(CreateMascotRequest request) {
+            // pretvaranje DTO-a u Mascot
+            var mascot = new Mascot
+            {
+
+                Name = request.Name,
+                Description = request.Description,
+                ImageUrl = request.ImageUrl,
+                RentalPrice = request.RentalPrice,
+                SalePrice = request.SalePrice,
+                IsAvailableForRent = request.IsAvailableForRent,
+                IsAvailableForSale = request.IsAvailableForSale,
+                StockQuantity = request.StockQuantity
+
+
+            };
+
+
+            _context.Mascots.Add(mascot);
+            await _context.SaveChangesAsync();
+
+            return StatusCode(StatusCodes.Status201Created, mascot);
+
+        }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMascot(int id) {
