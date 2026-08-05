@@ -76,14 +76,10 @@ namespace MascotBusiness.Api.Features.Mascots
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMascot(int id, Mascot mascot) {
-
-            if (id != mascot.Id) {
-
-                return BadRequest();
-
-            }
-
+        public async Task<IActionResult> UpdateMascot(
+            int id,
+            UpdateMascotRequest request)
+        {
             var existingMascot = await _context.Mascots.FindAsync(id);
 
             if (existingMascot == null)
@@ -91,17 +87,17 @@ namespace MascotBusiness.Api.Features.Mascots
                 return NotFound();
             }
 
-            existingMascot.Name = mascot.Name;
-            existingMascot.Description = mascot.Description;
-            existingMascot.ImageUrl = mascot.ImageUrl;
-            existingMascot.RentalPrice = mascot.RentalPrice;
-            existingMascot.SalePrice = mascot.SalePrice;
-            existingMascot.IsAvailableForRent = mascot.IsAvailableForRent;
-            existingMascot.IsAvailableForSale = mascot.IsAvailableForSale;
-            existingMascot.StockQuantity = mascot.StockQuantity;
-
+            existingMascot.Name = request.Name;
+            existingMascot.Description = request.Description;
+            existingMascot.ImageUrl = request.ImageUrl;
+            existingMascot.RentalPrice = request.RentalPrice;
+            existingMascot.SalePrice = request.SalePrice;
+            existingMascot.IsAvailableForRent = request.IsAvailableForRent;
+            existingMascot.IsAvailableForSale = request.IsAvailableForSale;
+            existingMascot.StockQuantity = request.StockQuantity;
 
             await _context.SaveChangesAsync();
+
             return NoContent();
         }
 

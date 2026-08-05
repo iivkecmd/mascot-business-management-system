@@ -25,7 +25,6 @@ PUT {{MascotBusiness.Api_HostAddress}}/api/mascots/1
 Content-Type: application/json
 
 {
-  "id": 1,
   "name": "Miki Maus",
   "description": "Maskota za decje rodjendane",
   "imageUrl": "/images/miki-maus.jpg",
