@@ -225,7 +225,7 @@ Ovo nisu zahtevi za početnu verziju.
 
 ## 13. Trenutno stanje
 
-Završena je prva kompletna vertikalna funkcionalna celina — katalog i detalji maskota od baze do React frontenda.
+Završene su katalog i detalji maskota od baze do React frontenda, kao i backend deo javnog toka za slanje zahteva za iznajmljivanje.
 
 Na backendu je završeno:
 
@@ -239,6 +239,23 @@ Na backendu je završeno:
 - dodati su posebni response DTO-i za kartice kataloga i detalje maskote;
 - uklonjen je početni `WeatherForecast` primer;
 - relevantni build i API zahtevi uspešno su provereni.
+
+Za tok iznajmljivanja na backendu je završeno:
+
+- dodati su modeli `Customer` i `Reservation`;
+- dodat je `ReservationStatus` sa statusima `Pending`, `Confirmed`, `Rejected`, `Cancelled` i `Completed`;
+- rezervacija je povezana sa klijentom i maskotom;
+- dodat je jedinstveni javni broj zahteva;
+- Entity Framework konfiguracija je proširena za nove modele i njihove veze;
+- kreirana je i primenjena migracija `AddCustomerAndReservation`;
+- dodati su `CreateReservationRequest` i `CreateReservationResponse` DTO-i;
+- napravljen je javni `POST /api/reservations` endpoint;
+- endpoint proverava da maskota postoji i da je dostupna za iznajmljivanje;
+- endpoint proverava da je termin u budućnosti i da je kraj posle početka;
+- novi zahtev dobija status `Pending`, a klijentu se vraća javni broj zahteva;
+- status rezervacije se u JSON odgovoru prikazuje kao čitljiv tekst;
+- endpoint je ručno testiran stvarnim zahtevom i uspešno je sačuvao klijenta i rezervaciju;
+- relevantni backend build je uspešno završen bez grešaka i upozorenja.
 
 Na frontendu je završeno:
 
@@ -256,17 +273,16 @@ Backend se razvija kao jednostavan modularni monolit sa feature-based organizaci
 
 Detaljan veliki ER model i dalje postoji samo kao mogući pravac za kasnije i ne treba ga odmah u potpunosti implementirati.
 
-Sledeći praktični cilj je početak toka iznajmljivanja na backendu:
+Sledeći praktični cilj je završetak javnog toka iznajmljivanja na frontendu:
 
-1. dodati modele `Customer` i `Reservation`;
-2. definisati osnovne statuse rezervacije;
-3. povezati rezervaciju sa klijentom i maskotom;
-4. dodati EF Core konfiguraciju i novu migraciju;
-5. napraviti endpoint za slanje javnog zahteva za iznajmljivanje;
-6. dodati validaciju kontakta, termina i dostupnosti maskote;
-7. pokrenuti build i ručno proveriti API zahteve.
+1. napraviti React formu za iznajmljivanje na stranici detalja maskote;
+2. automatski proslediti `MascotId` iz otvorene stranice;
+3. povezati formu sa `POST /api/reservations` endpointom;
+4. prikazati validacione i serverske greške korisniku;
+5. nakon uspešnog slanja prikazati javni broj zahteva i status `Pending`;
+6. pokrenuti frontend build i ručno proveriti ceo tok od stranice maskote do baze.
 
-Kada ovaj backend tok bude stabilan, napraviti React formu za slanje zahteva sa stranice detalja maskote. Posle toga nastaviti sa jednostavnim internim pregledom rezervacija i promenom njihovog statusa.
+Posle toga nastaviti sa jednostavnim internim pregledom rezervacija i promenom njihovog statusa. Pri promeni statusa u `Confirmed` obavezno proveriti preklapanje termina.
 
 ## 14. Definicija uspeha
 
