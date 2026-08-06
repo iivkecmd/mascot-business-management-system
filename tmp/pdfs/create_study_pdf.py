@@ -23,8 +23,8 @@ from reportlab.platypus import (
 )
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = ROOT / "SKRIPTA_05_08_2026.md"
-OUTPUT = ROOT / "output" / "pdf" / "Skripta_05_08_2026.pdf"
+SOURCE = ROOT / "SKRIPTA_06_08_2026.md"
+OUTPUT = ROOT / "output" / "pdf" / "Skripta_06_08_2026.pdf"
 
 pdfmetrics.registerFont(TTFont("Arial", r"C:\Windows\Fonts\arial.ttf"))
 pdfmetrics.registerFont(TTFont("Arial-Bold", r"C:\Windows\Fonts\arialbd.ttf"))
@@ -90,7 +90,7 @@ doc = BaseDocTemplate(
     str(OUTPUT), pagesize=A4,
     leftMargin=20 * mm, rightMargin=20 * mm,
     topMargin=18 * mm, bottomMargin=20 * mm,
-    title="Skripta - šta smo prešli 5. avgusta 2026.",
+    title="Skripta - šta smo prešli 6. avgusta 2026.",
     author="Družbalica",
 )
 frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id="main")
@@ -100,15 +100,15 @@ lines = SOURCE.read_text(encoding="utf-8").splitlines()
 story = [
     Spacer(1, 20 * mm),
     Paragraph("SKRIPTA ZA UČENJE", styles["CoverTitle"]),
-    Paragraph("Družbalica - full-stack katalog maskota", styles["CoverSub"]),
+    Paragraph("Družbalica - backend tok za rezervacije", styles["CoverSub"]),
     Spacer(1, 8 * mm),
     Table([[""]], colWidths=[55 * mm], rowHeights=[2.2 * mm], style=TableStyle([
         ("BACKGROUND", (0, 0), (-1, -1), BLUE),
     ])),
     Spacer(1, 8 * mm),
-    Paragraph("ASP.NET Core · Entity Framework Core · SQL Server · REST API · React · TypeScript", styles["CoverSub"]),
+    Paragraph("ASP.NET Core · Entity Framework Core · SQL Server · REST API · DTO · HTTP", styles["CoverSub"]),
     Spacer(1, 12 * mm),
-    Paragraph("5. avgust 2026.", styles["CoverSub"]),
+    Paragraph("6. avgust 2026.", styles["CoverSub"]),
 ]
 
 i = 1  # Preskoči originalni naslov; naslovna strana ga zamenjuje.

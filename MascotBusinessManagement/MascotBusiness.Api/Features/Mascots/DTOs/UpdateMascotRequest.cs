@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MascotBusiness.Api.Features.Mascots
+namespace MascotBusiness.Api.Features.Mascots.DTOs
 {
     public class UpdateMascotRequest
     {

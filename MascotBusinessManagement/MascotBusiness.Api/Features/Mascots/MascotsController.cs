@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MascotBusiness.Api.Data;
 using Microsoft.EntityFrameworkCore;
+using MascotBusiness.Api.Features.Mascots.DTOs;
 
 namespace MascotBusiness.Api.Features.Mascots
 {
