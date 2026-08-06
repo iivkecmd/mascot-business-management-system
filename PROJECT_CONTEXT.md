@@ -225,7 +225,9 @@ Ovo nisu zahtevi za početnu verziju.
 
 ## 13. Trenutno stanje
 
-Završena je početna backend celina za katalog maskota:
+Završena je prva kompletna vertikalna funkcionalna celina — katalog i detalji maskota od baze do React frontenda.
+
+Na backendu je završeno:
 
 - kreiran je ASP.NET Core Web API projekat na .NET 10;
 - povezan je lokalni SQL Server Express preko Entity Framework Core-a;
@@ -238,11 +240,33 @@ Završena je početna backend celina za katalog maskota:
 - uklonjen je početni `WeatherForecast` primer;
 - relevantni build i API zahtevi uspešno su provereni.
 
+Na frontendu je završeno:
+
+- kreiran je osnovni React/Next.js frontend;
+- frontend je povezan sa postojećim API-jem;
+- početna stranica prikazuje katalog maskota iz baze;
+- dodata je dinamička stranica detalja na ruti `/mascots/[id]`;
+- obrađena su loading, empty, error i not-found stanja;
+- prikazano je da li je maskota dostupna za iznajmljivanje ili prodaju;
+- API adresa se čita iz `NEXT_PUBLIC_API_URL`, uz lokalnu rezervnu vrednost;
+- frontend i backend povezani su kontrolisanom CORS politikom;
+- relevantni frontend build i ručne provere uspešno su završeni.
+
 Backend se razvija kao jednostavan modularni monolit sa feature-based organizacijom. Kod jedne funkcionalnosti drži se zajedno unutar `Features` foldera, dok zajednički EF Core kontekst i migracije ostaju izdvojeni. Ne uvoditi mikroservise, MediatR, generičke repozitorijume ili druge apstrakcije bez stvarne potrebe.
 
 Detaljan veliki ER model i dalje postoji samo kao mogući pravac za kasnije i ne treba ga odmah u potpunosti implementirati.
 
-Sledeći praktični cilj je kreiranje osnovnog React frontenda, povezivanje sa postojećim API-jem i prikaz kataloga i detalja maskota. Nakon toga nastaviti sa `Customer` i `Reservation` funkcionalnostima prema redosledu razvoja iz ovog dokumenta.
+Sledeći praktični cilj je početak toka iznajmljivanja na backendu:
+
+1. dodati modele `Customer` i `Reservation`;
+2. definisati osnovne statuse rezervacije;
+3. povezati rezervaciju sa klijentom i maskotom;
+4. dodati EF Core konfiguraciju i novu migraciju;
+5. napraviti endpoint za slanje javnog zahteva za iznajmljivanje;
+6. dodati validaciju kontakta, termina i dostupnosti maskote;
+7. pokrenuti build i ručno proveriti API zahteve.
+
+Kada ovaj backend tok bude stabilan, napraviti React formu za slanje zahteva sa stranice detalja maskote. Posle toga nastaviti sa jednostavnim internim pregledom rezervacija i promenom njihovog statusa.
 
 ## 14. Definicija uspeha
 
